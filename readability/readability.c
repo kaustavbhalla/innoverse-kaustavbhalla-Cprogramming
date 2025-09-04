@@ -1,55 +1,61 @@
+// #include <cs50.h>
 #include <stdio.h>
-#include <string.h>
 #include <math.h>
+#include <string.h>
 #include <ctype.h>
-#include <cs50.h>
+int main() {
+    //Lets define the variables :)
+    double index;
+    int roundedIndex;
 
-int main(){
     double avgL;
-    double avgS;
-
     int letterCount = 0;
     int wordCount = 0;
-    int sentenceCount = 0;
-    int tempCount = 0;
 
-    double LiamIndex;
-    int LiamIndexRounded;
+    double avgS;
+    int SentenceCount = 0;
 
-    //Let's take input :)
-    string textInput = get_string("Input: ");
-
-    //Logic for counting :)
-    for (int i = 0; i < strlen(textInput); ++i){
-        if (isalpha(textInput[i])){
-            letterCount += 1;
-        }
-
-        if (textInput[i] == ' '){
-            tempCount += 1;
-        }
-
-        if (textInput[i] == '.' || textInput[i] == '?' || textInput[i] == '!'){
-            sentenceCount += 1;
+    char text[1000];
+    printf("Enter: ");
+    fgets(text, sizeof(text), stdin);
+    text[strcspn(text, "\n")] = '\0';
+    
+    // Letters count :)
+    for(int i = 0; i < strlen(text); ++i){
+        if((text[i] >= 'a' && text[i] <= 'z') || (text[i] >= 'A' && text[i] <= 'Z')){
+            letterCount++;
         }
     }
 
-    wordCount = tempCount + 1;
+    //Sentence count :)
+    for(int i = 0; i < strlen(text); ++i){
+        if(text[i] == '.' || text[i] == '!' || text[i] == '?'){
+            SentenceCount++;
+        }
+    }
 
-    //Formulating the Liam Index :)
-    avgL = ((double)letterCount / wordCount) * 100;
-    avgS = ((double)sentenceCount / wordCount) * 100;
+    //word count :)
+    char *word = strtok(text, " ");
+    while(word != NULL){
+        wordCount++;
+        word = strtok(NULL, " ");
+    }
 
-    LiamIndex = (0.0588 * avgL) - (0.296 * avgS) - 15.8;
-    LiamIndexRounded =  (int)round(LiamIndex);
 
-    //Conditionals on the Coleman-Liau index :)
-    if (LiamIndexRounded < 1){
+    avgL = ((double) letterCount / wordCount) * 100;
+    avgS = ((double) SentenceCount / wordCount) * 100;
+
+    index = 0.0588 * avgL - 0.296 * avgS - 15.8;
+    roundedIndex = (int)round(index);
+
+    if(roundedIndex < 1){
         printf("Before Grade 1\n");
-    }else if (LiamIndexRounded > 16){
+    }
+    else if(roundedIndex >= 16){
         printf("Grade 16+\n");
-    }else{
-        printf("Grade %d\n", LiamIndexRounded);
+    }
+    else{
+        printf("Grade %d\n", roundedIndex);
     }
 
 }
