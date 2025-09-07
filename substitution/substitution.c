@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#include "cs50.h"
 
 
 int main(int argc, char *argv[]){
@@ -15,7 +14,10 @@ int main(int argc, char *argv[]){
 
     char cipher[100];
     strcpy(cipher, argv[1]);
-    string plainText = get_string("plaintext: ");
+    
+    printf("plaintext: ");
+    char plainText[100];
+    fgets(plainText, sizeof(plainText), stdin);
 
     int i = 0;
     while (plainText[i] != '\0'){
